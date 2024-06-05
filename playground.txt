@@ -1,0 +1,12 @@
+1. Set the database
+- Username
+- Password
+- Port Number
+- Database Name
+- Key
+Establish a connection using the python postgres client library (pg8000)
+
+2. Create a table
+- Table Name
+- Columns
+Send HTTP POST request to the backend, backend uses the python postgres client library for create table
