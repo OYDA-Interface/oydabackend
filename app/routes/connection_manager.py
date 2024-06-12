@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-import psycopg2
+import psycopg2 # type: ignore
 import json
 
 connections_bp = Blueprint("connection_manager", __name__)

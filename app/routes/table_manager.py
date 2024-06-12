@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-import psycopg2
+import psycopg2 # type: ignore
 import json
 
 table_manager_bp = Blueprint("table_manager", __name__)
@@ -42,6 +42,44 @@ def selectTable():
   except Exception as e:
       return jsonify({"error": f"Error: {e}"}), 500
 
+
+@table_manager_bp.route("/api/tableExists", methods=["POST"])
+def tableExists(): 
+  if not request.data:
+    return jsonify({"error":"No data provided"}), 400
+  try:
+    data = json.loads(request.data)
+    host = data.get('host')
+    port = data.get('port', 5432)
+    oydaBase = data.get('oydaBase')
+    user = data.get('user')
+    password = data.get('password')
+    table_name = data.get('table_name')
+
+    if not all([host, oydaBase, user, password, table_name]):
+      return jsonify({"error": "Missing required connection parameters or table name"}), 400
+    
+    conn = psycopg2.connect(dbname=oydaBase, user=user, password=password, host=host, port=port)
+    cursor = conn.cursor()
+
+    query = f"SELECT 1 FROM {table_name} LIMIT 1"
+    cursor.execute(query) 
+    result = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    if result:
+      return jsonify({"exists": True}), 200
+    else:
+      return jsonify({"exists": False}), 200
+  
+  except psycopg2.DatabaseError as e:
+      return jsonify({"error": f"Database error: {e}"}), 500
+  except Exception as e:
+      return jsonify({"error": f"Error: {e}"}), 500
+
+   
 
 @table_manager_bp.route("/api/dropTable", methods=["POST"])
 def dropTable():
