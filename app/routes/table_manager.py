@@ -136,7 +136,7 @@ def dropTable():
         return jsonify({"error": f"Error: {e}"}), 500
 
 
-@table_manager_bp.route("api/create_table")
+@table_manager_bp.route("/api/create_table")
 def create_table():
     if not request.data:
         return jsonify({"error": "No data provided"}), 400
