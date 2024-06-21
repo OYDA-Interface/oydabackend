@@ -149,7 +149,7 @@ def insert_rows():
         return jsonify({"error": f"Database connection failed: {e}"}), 500
 
 
-@app.route("api/update_row")
+@data_bp.route("/api/update_row")
 def update_row():
     if not request.data:
         return jsonify({"error": "No data provided"}), 400
