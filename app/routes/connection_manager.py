@@ -22,10 +22,45 @@ def set_oydabase():
             return jsonify({"error": "Missing required connection parameters"}), 400
         
         conn = psycopg2.connect(dbname=oydaBase, user=user, password=password, host=host, port=port)
+        cursor = conn.cursor()
+        
+        # cursor.execute("""
+        # SELECT table_schema, table_name 
+        # FROM information_schema.tables 
+        # WHERE table_schema NOT IN ('information_schema', 'pg_catalog');
+        # """)
+        
+        # tables = cursor.fetchall()
+        # print(f"Existing tables: {tables}")
 
+        cursor.execute("""
+        SELECT EXISTS (
+            SELECT FROM information_schema.tables 
+            WHERE table_schema = 'public' 
+            AND table_name = 'dependencies'
+        );
+        """
+        )
+        exists = cursor.fetchone()[0]
+        print(exists)
+
+        if exists:
+            return jsonify({"message":"Oydabase set successfully: Dependencies exist"}), 200
+        else:
+            create_dependency_table_query = """
+            CREATE TABLE dependencies (
+                name VARCHAR(255) NOT NULL,
+                version VARCHAR(255) NOT NULL
+            );
+            """
+            cursor.execute(create_dependency_table_query)
+            conn.commit()
+            message = "Oydabase set successfully: Dependencies table created"
+
+        cursor.close()
         conn.close()
 
-        return jsonify({"message":"Oydabase set successfully"}), 200
+        return jsonify({"message":message}), 200
     
     except (Exception, psycopg2.DatabaseError) as e:
-        return jsonify({"error": f" Error connecting to the Oydabase: {e}"}), 500
+        return jsonify({"error": f"{e}"}), 500

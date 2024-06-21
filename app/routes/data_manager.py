@@ -53,9 +53,9 @@ def selectRows():
         return jsonify(result), 200
 
     except psycopg2.DatabaseError as e:
-        return jsonify({"error": f"Database error: {e}"}), 500
+        return jsonify({"error": f"{e}"}), 500
     except Exception as e:
-        return jsonify({"error": f"Error: {e}"}), 500
+        return jsonify({"error": f"{e}"}), 500
 
 
 @data_bp.route("/api/selectColumns", methods=["POST"])
@@ -108,9 +108,9 @@ def selectColumns():
         return jsonify(result), 200
 
     except psycopg2.DatabaseError as e:
-        return jsonify({"error": f"Database error: {e}"}), 500
+        return jsonify({"error": f"{e}"}), 500
     except Exception as e:
-        return jsonify({"error": f"Error: {e}"}), 500
+        return jsonify({"error": f"{e}"}), 500
 
 
 @data_bp.route("/api/insert_row", methods=["POST"])
