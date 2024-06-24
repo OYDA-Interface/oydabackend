@@ -10,7 +10,6 @@ def set_oydabase():
         return jsonify({"error":"No data provided"}), 400
     try:
         data = json.loads(request.data)
-        # print(data)
 
         host = data.get('host')
         port = data.get('port', 5432) 
@@ -23,15 +22,6 @@ def set_oydabase():
         
         conn = psycopg2.connect(dbname=oydaBase, user=user, password=password, host=host, port=port)
         cursor = conn.cursor()
-        
-        # cursor.execute("""
-        # SELECT table_schema, table_name 
-        # FROM information_schema.tables 
-        # WHERE table_schema NOT IN ('information_schema', 'pg_catalog');
-        # """)
-        
-        # tables = cursor.fetchall()
-        # print(f"Existing tables: {tables}")
 
         cursor.execute("""
         SELECT EXISTS (
@@ -42,20 +32,18 @@ def set_oydabase():
         """
         )
         exists = cursor.fetchone()[0]
-        print(exists)
 
         if exists:
             return jsonify({"message":"Oydabase set successfully: Dependencies exist"}), 200
         else:
-            create_dependency_table_query = """
+            cursor.execute("""
             CREATE TABLE dependencies (
                 name VARCHAR(255) NOT NULL,
                 version VARCHAR(255) NOT NULL
             );
-            """
-            cursor.execute(create_dependency_table_query)
+            """)
             conn.commit()
-            message = "Oydabase set successfully: Dependencies table created"
+            message = "Connected to Oydabase @ " + host + ":" + port + "/" + oydaBase + ".: Dependencies table created"
 
         cursor.close()
         conn.close()
