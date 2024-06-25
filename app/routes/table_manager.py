@@ -6,7 +6,15 @@ table_manager_bp = Blueprint("table_manager", __name__)
 
 
 @table_manager_bp.route("/api/selectTable", methods=["POST"])
-def selectTable():
+def select_table():
+    """
+    The function `select_table` retrieves data from a specified table in a PostgreSQL database based on
+    the provided connection parameters.
+    :return: Returns a JSON response containing the result of a SELECT query
+    on a specified table in a PostgreSQL database. The result includes the rows of the table in a list
+    of dictionaries where each dictionary represents a row with column names as keys and row values as
+    values.
+    """
     if not request.data:
         return jsonify({"error": "No data provided"}), 400
     try:
@@ -52,7 +60,13 @@ def selectTable():
 
 
 @table_manager_bp.route("/api/tableExists", methods=["POST"])
-def tableExists():
+def table_exists():
+    """
+    The function `table_exists` checks if a specified table exists in a PostgreSQL database using the
+    provided connection parameters.
+    :return: Returns a JSON response indicating whether a specified table
+    exists in a PostgreSQL database.
+    """
     if not request.data:
         return jsonify({"error": "No data provided"}), 400
     try:
@@ -96,7 +110,13 @@ def tableExists():
 
 
 @table_manager_bp.route("/api/dropTable", methods=["POST"])
-def dropTable():
+def drop_table():
+    """
+    The `drop_table` function drops a specified table from a PostgreSQL database based on the provided
+    connection parameters.
+    :return: Returns a JSON response with a message indicating the success or
+    failure of dropping a table in a PostgreSQL database.
+    """
     if not request.data:
         return jsonify({"error": "No data provided"}), 400
     try:
@@ -138,6 +158,11 @@ def dropTable():
 
 @table_manager_bp.route("/api/create_table")
 def create_table():
+    """
+    The `create_table` function takes in data from a request, establishes a connection to a PostgreSQL
+    database, and creates a table based on the provided parameters.
+    :return: Returns a JSON response with a success or fail message
+    """
     if not request.data:
         return jsonify({"error": "No data provided"}), 400
     data = json.loads(request.data)
