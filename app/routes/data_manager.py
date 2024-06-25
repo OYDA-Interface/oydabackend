@@ -7,6 +7,13 @@ data_bp = Blueprint("data_manager", __name__)
 
 @data_bp.route("/api/selectRows", methods=["POST"])
 def selectRows():
+    """
+    The `selectRows` function retrieves rows from a PostgreSQL database table based on provided
+    connection parameters and conditions.
+    :return: Returns a JSON response containing the result of the SQL query
+    executed on a PostgreSQL database table based on the provided parameters. The result includes the
+    rows fetched from the table with column names as keys in a list of dictionaries.
+    """
     if not request.data:
         return jsonify({"error": "No data provided"}), 400
 
@@ -60,6 +67,13 @@ def selectRows():
 
 @data_bp.route("/api/selectColumns", methods=["POST"])
 def selectColumns():
+    """
+    The `selectColumns` function retrieves specific columns from a database table based on provided
+    parameters and conditions.
+    :return: Returns a JSON response containing the result of selecting
+    specific columns from a database table based on the provided parameters. The response includes the
+    data fetched from the database table in a structured format.
+    """
     if not request.data:
         return jsonify({"error": "No data provided"}), 400
 
@@ -115,6 +129,12 @@ def selectColumns():
 
 @data_bp.route("/api/insert_row", methods=["POST"])
 def insert_rows():
+    """
+    The `insert_rows` function inserts a row of data into a specified table in a PostgreSQL database
+    based on the provided parameters.
+    :return: Returns a JSON response with a success message if the row was
+    inserted successfully, or an error message if there was an issue with the database connection.
+    """
     if not request.data:
         return jsonify({"error": "No data provided"})
     data = json.loads(request.data)
@@ -151,6 +171,13 @@ def insert_rows():
 
 @data_bp.route("/api/update_row")
 def update_row():
+    """
+    The function `update_row` updates a row in a PostgreSQL database table based on provided data and
+    conditions.
+    :return: Returns a JSON response with a success message if the row update
+    operation is successful. If there is an error or exception during the database connection or update
+    process, it returns a JSON response with an error message.
+    """
     if not request.data:
         return jsonify({"error": "No data provided"}), 400
     data = json.loads(request.data)
