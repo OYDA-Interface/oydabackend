@@ -5,13 +5,13 @@ import json
 data_bp = Blueprint("data_manager", __name__)
 
 
-@data_bp.route("/api/selectRows", methods=["POST"])
-def selectRows():
+@data_bp.route("/api/select_rows", methods=["POST"])
+def select_rows():
     """
-    The `selectRows` function retrieves rows from a PostgreSQL database table based on provided
+    The `select_rows` function retrieves rows from a PostgreSQL database table based on provided
     connection parameters and conditions.
     :return: Returns a JSON response containing the result of the SQL query
-    executed on a PostgreSQL database table based on the provided parameters. The result includes the
+    executed on a oydabase table based on the provided parameters. The result includes the
     rows fetched from the table with column names as keys in a list of dictionaries.
     """
     if not request.data:
@@ -65,10 +65,10 @@ def selectRows():
         return jsonify({"error": f"{e}"}), 500
 
 
-@data_bp.route("/api/selectColumns", methods=["POST"])
-def selectColumns():
+@data_bp.route("/api/select_columns", methods=["POST"])
+def select_columns():
     """
-    The `selectColumns` function retrieves specific columns from a database table based on provided
+    The `select_columns` function retrieves specific columns from a database table based on provided
     parameters and conditions.
     :return: Returns a JSON response containing the result of selecting
     specific columns from a database table based on the provided parameters. The response includes the

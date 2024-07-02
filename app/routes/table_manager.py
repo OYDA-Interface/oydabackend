@@ -5,7 +5,7 @@ import json
 table_manager_bp = Blueprint("table_manager", __name__)
 
 
-@table_manager_bp.route("/api/selectTable", methods=["POST"])
+@table_manager_bp.route("/api/select_table", methods=["POST"])
 def select_table():
     """
     The function `select_table` retrieves data from a specified table in a PostgreSQL database based on
@@ -59,7 +59,7 @@ def select_table():
         return jsonify({"error": f"Error: {e}"}), 500
 
 
-@table_manager_bp.route("/api/tableExists", methods=["POST"])
+@table_manager_bp.route("/api/table_exists", methods=["POST"])
 def table_exists():
     """
     The function `table_exists` checks if a specified table exists in a PostgreSQL database using the
@@ -109,7 +109,7 @@ def table_exists():
         return jsonify({"error": f"Error: {e}"}), 500
 
 
-@table_manager_bp.route("/api/dropTable", methods=["POST"])
+@table_manager_bp.route("/api/drop_table", methods=["POST"])
 def drop_table():
     """
     The `drop_table` function drops a specified table from a PostgreSQL database based on the provided
