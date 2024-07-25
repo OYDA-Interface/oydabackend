@@ -156,7 +156,7 @@ def drop_table():
         return jsonify({"error": f"Error: {e}"}), 500
 
 
-@table_manager_bp.route("/api/create_table")
+@table_manager_bp.route("/api/create_table", methods=["POST"])
 def create_table():
     """
     The `create_table` function takes in data from a request, establishes a connection to a PostgreSQL
@@ -184,10 +184,11 @@ def create_table():
         )
         cur = conn.cursor()
 
-        columns = ", ".join([f"{k} {v}" for k, v in columns.items()])
-        query = f"CREATE TABLE {table} ({columns})"
+        column_definitions = ", ".join([f"{column_name} {column_type}" for column_name, column_type in columns.items()])
+        query = f"CREATE TABLE {table} ({column_definitions})"
         cur.execute(query)
         conn.commit()
+        cur.close()
         conn.close()
 
         return jsonify({"message": "Table created successfully"}), 200
