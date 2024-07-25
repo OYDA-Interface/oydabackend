@@ -200,7 +200,7 @@ def create_table():
                 for column_name, column_type in columns.items()
             ]
         )
-        query = f"CREATE TABLE {table_name} ({column_definitions})"
+        query = f"CREATE TABLE IF NOT EXISTS {table_name} ({column_definitions})"
         cur.execute(query)
         conn.commit()
         cur.close()
