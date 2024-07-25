@@ -172,7 +172,7 @@ def create_table():
     oydaBase = data.get("oydaBase")
     user = data.get("user")
     password = data.get("password")
-    table = data.get("table")
+    table_name = data.get("table_name")
     columns = data.get("columns")
 
     if not host:
@@ -183,8 +183,8 @@ def create_table():
         return jsonify({"error": "Missing required parameter: user"}), 400
     if not password:
         return jsonify({"error": "Missing required parameter: password"}), 400
-    if not table:
-        return jsonify({"error": "Missing required parameter: table"}), 400
+    if not table_name:
+        return jsonify({"error": "Missing required parameter: table_name"}), 400
     if not columns:
         return jsonify({"error": "Missing required parameter: columns"}), 400
 
@@ -200,7 +200,7 @@ def create_table():
                 for column_name, column_type in columns.items()
             ]
         )
-        query = f"CREATE TABLE {table} ({column_definitions})"
+        query = f"CREATE TABLE {table_name} ({column_definitions})"
         cur.execute(query)
         conn.commit()
         cur.close()
