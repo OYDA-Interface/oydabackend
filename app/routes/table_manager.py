@@ -169,7 +169,7 @@ def create_table():
 
     host = data.get("host")
     port = data.get("port", 5432)
-    dbname = data.get("dbname")
+    dbname = data.get("oydaBase")
     user = data.get("user")
     password = data.get("password")
     table = data.get("table")
