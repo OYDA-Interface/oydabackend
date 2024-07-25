@@ -174,9 +174,19 @@ def create_table():
     password = data.get("password")
     table = data.get("table")
     columns = data.get("columns")
-
-    if not all([host, dbname, user, password, table, columns]):
-        return jsonify({"error": "Missing required parameters"}), 400
+    
+    if not host:
+        return jsonify({"error": "Missing required parameter: host"}), 400
+    if not dbname:
+        return jsonify({"error": "Missing required parameter: dbname"}), 400
+    if not user:
+        return jsonify({"error": "Missing required parameter: user"}), 400
+    if not password:
+        return jsonify({"error": "Missing required parameter: password"}), 400
+    if not table:
+        return jsonify({"error": "Missing required parameter: table"}), 400
+    if not columns:
+        return jsonify({"error": "Missing required parameter: columns"}), 400
 
     try:
         conn = psycopg2.connect(
