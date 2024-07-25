@@ -169,16 +169,16 @@ def create_table():
 
     host = data.get("host")
     port = data.get("port", 5432)
-    dbname = data.get("oydaBase")
+    oydaBase = data.get("oydaBase")
     user = data.get("user")
     password = data.get("password")
     table = data.get("table")
     columns = data.get("columns")
-    
+
     if not host:
         return jsonify({"error": "Missing required parameter: host"}), 400
-    if not dbname:
-        return jsonify({"error": "Missing required parameter: dbname"}), 400
+    if not oydaBase:
+        return jsonify({"error": "Missing required parameter: oydaBase"}), 400
     if not user:
         return jsonify({"error": "Missing required parameter: user"}), 400
     if not password:
@@ -190,11 +190,16 @@ def create_table():
 
     try:
         conn = psycopg2.connect(
-            dbname=dbname, user=user, password=password, host=host, port=port
+            dbname=oydaBase, user=user, password=password, host=host, port=port
         )
         cur = conn.cursor()
 
-        column_definitions = ", ".join([f"{column_name} {column_type}" for column_name, column_type in columns.items()])
+        column_definitions = ", ".join(
+            [
+                f"{column_name} {column_type}"
+                for column_name, column_type in columns.items()
+            ]
+        )
         query = f"CREATE TABLE {table} ({column_definitions})"
         cur.execute(query)
         conn.commit()
