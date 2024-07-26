@@ -28,13 +28,16 @@ def select_rows():
         table_name = data.get("table_name")
         conditions = data.get("conditions")
 
-        if not all([host, oydaBase, user, password, table_name]):
-            return (
-                jsonify(
-                    {"error": "Missing required connection parameters or table name"}
-                ),
-                400,
-            )
+        if not host:
+            return jsonify({"error": "Missing required parameter: host"}), 400
+        if not oydaBase:
+            return jsonify({"error": "Missing required parameter: oydaBase"}), 400
+        if not user:
+            return jsonify({"error": "Missing required parameter: user"}), 400
+        if not password:
+            return jsonify({"error": "Missing required parameter: password"}), 400
+        if not table_name:
+            return jsonify({"error": "Missing required parameter: table_name"}), 400
 
         conn = psycopg2.connect(
             dbname=oydaBase, user=user, password=password, host=host, port=port
@@ -89,15 +92,20 @@ def select_columns():
         columns = data.get("columns")
         conditions = data.get("conditions")
 
-        if not all([host, oydaBase, user, password, table_name, columns]):
-            return (
-                jsonify(
-                    {
-                        "error": "Missing required connection parameters, table name, or columns"
-                    }
-                ),
-                400,
-            )
+        if not host:
+            return jsonify({"error": "Missing required parameter: host"}), 400
+        if not oydaBase:
+            return jsonify({"error": "Missing required parameter: oydaBase"}), 400
+        if not user:
+            return jsonify({"error": "Missing required parameter: user"}), 400
+        if not password:
+            return jsonify({"error": "Missing required parameter: password"}), 400
+        if not table_name:
+            return jsonify({"error": "Missing required parameter: table_name"}), 400
+        if not columns:
+            return jsonify({"error": "Missing required parameter: columns"}), 400
+        if not conditions:
+            return jsonify({"error": "Missing required parameter: conditions"}), 400
 
         conn = psycopg2.connect(
             dbname=oydaBase, user=user, password=password, host=host, port=port
@@ -144,11 +152,19 @@ def insert_row():
     oydaBase = data.get("oydaBase")
     user = data.get("user")
     password = data.get("password")
-    table = data.get("table")
+    table_name = data.get("table_name")
     row = data.get("row")
 
-    if not all([host, oydaBase, user, password, table, row]):
-        return jsonify({"error": "Missing required parameters"}), 400
+    if not host:
+        return jsonify({"error": "Missing required parameter: host"}), 400
+    if not oydaBase:
+        return jsonify({"error": "Missing required parameter: oydaBase"}), 400
+    if not user:
+        return jsonify({"error": "Missing required parameter: user"}), 400
+    if not password:
+        return jsonify({"error": "Missing required parameter: password"}), 400
+    if not table_name:
+        return jsonify({"error": "Missing required parameter: table_name"}), 400
 
     try:
         conn = psycopg2.connect(
@@ -158,7 +174,7 @@ def insert_row():
 
         columns = ", ".join(row.keys())
         values = ", ".join([f"'{v}'" for v in row.values()])
-        query = f"INSERT INTO {table} ({columns}) VALUES ({values})"
+        query = f"INSERT INTO {table_name} ({columns}) VALUES ({values})"
         cur.execute(query)
         conn.commit()
         conn.close()
@@ -187,13 +203,22 @@ def update_row():
     oydaBase = data.get("oydaBase")
     user = data.get("user")
     password = data.get("password")
-    table = data.get("table")
+    table_name = data.get("table_name")
     row = data.get("row")
     condition = data.get("condition")
 
-    if not all([host, oydaBase, user, password, table, row, condition]):
-        return jsonify({"error": "Missing required parameters"}), 400
-
+    if not host:
+        return jsonify({"error": "Missing required parameter: host"}), 400
+    if not oydaBase:
+        return jsonify({"error": "Missing required parameter: oydaBase"}), 400
+    if not user:
+        return jsonify({"error": "Missing required parameter: user"}), 400
+    if not password:
+        return jsonify({"error": "Missing required parameter: password"}), 400
+    if not table_name:
+        return jsonify({"error": "Missing required parameter: table_name"}), 400
+    if not condition:
+        return jsonify({"error": "Missing required parameter: condition"}), 400
     try:
         conn = psycopg2.connect(
             dbname=oydaBase, user=user, password=password, host=host, port=port
