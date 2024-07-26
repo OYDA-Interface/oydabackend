@@ -228,7 +228,7 @@ def update_row():
         cur = conn.cursor()
 
         columns = ", ".join([f"{k} = '{v}'" for k, v in row.items()])
-        condition = " AND ".join([f"{k} = '{v}'" for k, v in condition.items()])
+        # condition = " AND ".join([f"{k} = '{v}'" for k, v in condition.items()])
         query = f"UPDATE {table_name} SET {columns} WHERE {condition}"
         cur.execute(query)
         conn.commit()
@@ -279,7 +279,7 @@ def delete_row():
         )
         cur = conn.cursor()
 
-        condition = " AND ".join([f"{k} = '{v}'" for k, v in condition.items()])
+        # condition = " AND ".join([f"{k} = '{v}'" for k, v in condition.items()])
         query = f"DELETE FROM {table_name} WHERE {condition}"
         cur.execute(query)
         conn.commit()
