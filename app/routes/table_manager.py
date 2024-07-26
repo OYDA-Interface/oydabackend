@@ -144,7 +144,6 @@ def drop_table():
         query = f"DROP TABLE {table_name};"
         cursor.execute(query)
         conn.commit()
-
         cursor.close()
         conn.close()
 
@@ -208,5 +207,7 @@ def create_table():
 
         return jsonify({"message": "Table created successfully"}), 200
 
-    except (Exception, psycopg2.DatabaseError) as e:
-        return jsonify({"error": f"Database connection failed: {e}"}), 500
+    except psycopg2.DatabaseError as e:
+        return jsonify({"error": f"Database error: {e}"}), 500
+    except Exception as e:
+        return jsonify({"error": f"Error: {e}"}), 500

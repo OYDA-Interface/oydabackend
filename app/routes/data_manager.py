@@ -128,7 +128,7 @@ def select_columns():
 
 
 @data_bp.route("/api/insert_row", methods=["POST"])
-def insert_rows():
+def insert_row():
     """
     The `insert_rows` function inserts a row of data into a specified table in a PostgreSQL database
     based on the provided parameters.
@@ -141,18 +141,18 @@ def insert_rows():
 
     host = data.get("host")
     port = data.get("port", 5432)
-    dbname = data.get("dbname")
+    oydaBase = data.get("oydaBase")
     user = data.get("user")
     password = data.get("password")
     table = data.get("table")
     row = data.get("row")
 
-    if not all([host, dbname, user, password, table, row]):
+    if not all([host, oydaBase, user, password, table, row]):
         return jsonify({"error": "Missing required parameters"}), 400
 
     try:
         conn = psycopg2.connect(
-            dbname=dbname, user=user, password=password, host=host, port=port
+            dbname=oydaBase, user=user, password=password, host=host, port=port
         )
         cur = conn.cursor()
 
@@ -184,19 +184,19 @@ def update_row():
 
     host = data.get("host")
     port = data.get("port", 5432)
-    dbname = data.get("dbname")
+    oydaBase = data.get("oydaBase")
     user = data.get("user")
     password = data.get("password")
     table = data.get("table")
     row = data.get("row")
     condition = data.get("condition")
 
-    if not all([host, dbname, user, password, table, row, condition]):
+    if not all([host, oydaBase, user, password, table, row, condition]):
         return jsonify({"error": "Missing required parameters"}), 400
 
     try:
         conn = psycopg2.connect(
-            dbname=dbname, user=user, password=password, host=host, port=port
+            dbname=oydaBase, user=user, password=password, host=host, port=port
         )
         cur = conn.cursor()
 
