@@ -185,7 +185,7 @@ def insert_row():
         return jsonify({"error": f"Database connection failed: {e}"}), 500
 
 
-@data_bp.route("/api/update_row")
+@data_bp.route("/api/update_row", methods=["POST"])
 def update_row():
     """
     The function `update_row` updates a row in a PostgreSQL database table based on provided data and
@@ -240,7 +240,7 @@ def update_row():
         return jsonify({"error": f"Database connection failed: {e}"}), 500
 
 
-@data_bp.route("/api/delete_row")
+@data_bp.route("/api/delete_row", methods=["POST"])
 def delete_row():
     """
     The function `delete_row` deletes a row from a PostgreSQL database table based on provided data and
