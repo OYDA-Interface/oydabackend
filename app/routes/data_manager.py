@@ -236,3 +236,54 @@ def update_row():
 
     except (Exception, psycopg2.DatabaseError) as e:
         return jsonify({"error": f"Database connection failed: {e}"}), 500
+
+
+@data_bp.route("/api/delete_row")
+def delete_row():
+    """
+    The function `delete_row` deletes a row from a PostgreSQL database table based on provided data and
+    conditions.
+    :return: Returns a JSON response with a success message if the row deletion
+    operation is successful. If there is an error or exception during the database connection or deletion
+    process, it returns a JSON response with an error message.
+    """
+    if not request.data:
+        return jsonify({"error": "No data provided"}), 400
+    data = json.loads(request.data)
+
+    host = data.get("host")
+    port = data.get("port", 5432)
+    oydaBase = data.get("oydaBase")
+    user = data.get("user")
+    password = data.get("password")
+    table_name = data.get("table_name")
+    condition = data.get("condition")
+
+    if not host:
+        return jsonify({"error": "Missing required parameter: host"}), 400
+    if not oydaBase:
+        return jsonify({"error": "Missing required parameter: oydaBase"}), 400
+    if not user:
+        return jsonify({"error": "Missing required parameter: user"}), 400
+    if not password:
+        return jsonify({"error": "Missing required parameter: password"}), 400
+    if not table_name:
+        return jsonify({"error": "Missing required parameter: table_name"}), 400
+    if not condition:
+        return jsonify({"error": "Missing required parameter: condition"}), 400
+    try:
+        conn = psycopg2.connect(
+            dbname=oydaBase, user=user, password=password, host=host, port=port
+        )
+        cur = conn.cursor()
+
+        condition = " AND ".join([f"{k} = '{v}'" for k, v in condition.items()])
+        query = f"DELETE FROM {table_name} WHERE {condition}"
+        cur.execute(query)
+        conn.commit()
+        conn.close()
+
+        return jsonify({"message": "Row deleted successfully"}), 200
+
+    except (Exception, psycopg2.DatabaseError) as e:
+        return jsonify({"error": f"Database connection failed: {e}"}), 500
