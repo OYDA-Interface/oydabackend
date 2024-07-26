@@ -219,6 +219,8 @@ def update_row():
         return jsonify({"error": "Missing required parameter: table_name"}), 400
     if not condition:
         return jsonify({"error": "Missing required parameter: condition"}), 400
+    if not row:
+        return jsonify({"error": "Missing required parameter: row"}), 400
     try:
         conn = psycopg2.connect(
             dbname=oydaBase, user=user, password=password, host=host, port=port
