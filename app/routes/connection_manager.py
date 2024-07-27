@@ -47,6 +47,8 @@ def set_oydabase():
         if not utils.check_table_exists(cursor, "dependencies"):
             utils.create_dependencies_table(cursor)
             conn.commit()
+            cursor.execute("GRANT ALL PRIVILEGES ON TABLE dependencies TO PUBLIC;")
+            conn.commit()
             message = f"Connected to Oydabase @ {host}:{port}/{oydaBase}. Dependencies table created"
         else:
             message = (
@@ -56,6 +58,8 @@ def set_oydabase():
         # Check for devs table
         if not utils.check_table_exists(cursor, "devs"):
             utils.create_devs_table(cursor)
+            conn.commit()
+            cursor.execute("GRANT ALL PRIVILEGES ON TABLE devs TO PUBLIC;")
             conn.commit()
 
         # Handle developer keys
